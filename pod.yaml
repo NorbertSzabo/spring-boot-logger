@@ -1,0 +1,15 @@
+---
+ apiVersion: v1
+ kind: Pod
+ metadata: 
+   name: spring-boot-dknv-logger3
+   labels: 
+    environment: test
+    app: dknv-logger-web
+ spec: 
+   containers:
+   - name: spring-boot-dknv-logger3
+     image: spring-boot-dknv-logger3
+     imagePullPolicy: Never     
+     ports:
+      - containerPort: 80

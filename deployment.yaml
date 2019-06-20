@@ -1,0 +1,19 @@
+---
+ apiVersion: extensions/v1beta1
+ kind: Deployment
+ metadata: 
+   name: spring-boot-dknv-logger3   
+ spec: 
+  replicas: 2
+  template:
+    metadata:     
+      labels:      
+        app: dknv-logger-web
+    spec: 
+      containers:
+        - name: spring-boot-dknv-logger3
+          image: spring-boot-dknv-logger3
+          imagePullPolicy: Never     
+          ports:
+            - containerPort: 80
+        

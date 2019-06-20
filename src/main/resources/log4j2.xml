@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	
+	<Properties>
+        <Property name="basePath">c:/temp/logs</Property>
+    </Properties>
+    
+    <Appenders>
+    	 <RollingFile name="fileLogger" fileName="${basePath}/app-info.log" filePattern="${basePath}/app-info-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+            	<!-- '%{logdate} %{+logdate} %{loglevel} %{logger.name} [%{kube.node.id}] [%{component.id}] [%{user.id}] [%{workflow.id}] [%{correlation.id}][%{thread.id}] %{msg} -->
+                <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] kube.node.id=%X{kubeNodeId} component.id=[%c{1}] [%l] user.id=%X{loggedUserId} workflow.id=%X{workflowId} correlation.id=%X{correlationId} thread.id=[%t] - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+        
+        <RollingFile name="filePayloadLogger" fileName="${basePath}/app-payload-info.log" filePattern="${basePath}/app-payload-info-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%c{1}] [%l] [%t] - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+        
+        <RollingFile name="filePayloadCustomLogger" fileName="${basePath}/app-payload-custom-info.log" filePattern="${basePath}/app-payload-custom-info-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+            	<!-- '%{logdate} %{+logdate} %{loglevel} %{logger.name} [%{kube.node.id}] [%{component.id}] [%{user.id}] [%{workflow.id}] [%{correlation.id}][%{thread.id}] %{msg} -->
+                <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] kube.node.id=%X{kubeNodeId} component.id=[%c{1}] [%l] user.id=%X{loggedUserId} workflow.id=%X{workflowId} correlation.id=%X{correlationId} thread.id=[%t] - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+        
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout>
+            	<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%c{1}] [%l] [%t] - %msg%n</pattern>
+            </PatternLayout> 
+            
+        </Console>
+    </Appenders>
+        
+    <Loggers>
+        <Logger name="com.dknv.example.controllers" level="debug" additivity="true">
+            <appender-ref ref="fileLogger" level="debug" />
+        </Logger>
+        
+        <Logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+        	<appender-ref ref="filePayloadLogger" level="debug"/>
+        </Logger>
+        <Logger name="com.dknv.example.filters.PayloadLoggingFilterConfig">
+        	<appender-ref ref="filePayloadLogger" level="debug"/>
+        </Logger>
+        <Logger name="com.dknv.example.interceptors.PayloadLoggingInterceptor">
+        	<appender-ref ref="filePayloadCustomLogger" level="debug"/>
+        </Logger>
+        <Root level="debug" additivity="true">
+            <appender-ref ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>
